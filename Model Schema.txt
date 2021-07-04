@@ -1,0 +1,38 @@
+# Transaction Model
+Type : "add or sub"
+Quantity: 
+Date
+
+# Medicine Model(Embeded Mongo Model)
+Medicine_id = ObjectId(pk=true)
+Medicine Name
+Expiry Date
+Manufacturer Name
+Dose
+Price
+Last MR Visit
+Total Quantity Present
+Total Quanity sold in last 30 days
+Description
+Transaction = EmbeddedDocumentLiustFiedl(Transactions)
+
+# Company Model
+Company_Name = CharField(pk=True)
+Medicines Associated = EmbeddedDocumentListField(Medicines)
+
+
+# User Model(Mongo Model)
+User_id = Object(pk=True)
+Name
+Email
+Password
+PhoneNumber
+Address
+Company_partners = EmbeddedListDocument(Company)
+is_verfied = False
+verfication_token
+verfication_token_expiry_time
+
+# We are checking ananlysis based of two consecutive MR visits
+mv1        mv2
+

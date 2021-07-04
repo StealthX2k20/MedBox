@@ -1,0 +1,32 @@
+1) Model
+2) Login/Sign up Verification
+
+Facilities =>
+
+# Access/Auth Endpoints
+/login
+/sigup
+/logout
+/user_id/verify/token_id
+
+# Users/Medicines
+/ => landing_page
+/my_stock/?company_stock=cn => mystock #if name==null select all medicines
+/users/profile => my profile
+/users/edit/profile
+/users/edit/medicine_info => list of medicies to be changed details in request body
+/users/sell/medicine/medicine_id # to sell medicines
+/users/add_to_stocks/medicine/medicine_id # to add medcine quantities to the stock from MR
+/users/add/medicines # to add new medicines to the shop
+/users/medicine_info/medicine_id
+/users/analysis/?company_name=cn #if name==null select all medicines
+/users/medicines/transactions?medicine_id=m_id
+
+
+'''Medicine Request Body: [
+    {
+        manufacturer_name
+        qunatity
+        final
+    }
+]'''
