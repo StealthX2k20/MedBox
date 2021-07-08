@@ -1,0 +1,50 @@
+{
+    "shopkeeper_name": "Sigma Pharmasuiticals Pvt Ltd",
+    "email": "medicare.sigma@gmail.com",
+    "password": "sigma123@",
+    "shopkeeper_contact_number": 9876543210,
+    "shop_address": "1/10, Birhana Road, New Delhi",
+    "company_tie_ups": [
+        {
+            "company_name": "Abbott",
+            "company_mr_name": "Ramesh Bhatt",
+            "last_mr_visit": "2021-07-07 18:31:33.580940"
+        }
+    ],
+    "medicines": [
+        {
+            "medicine_name": "Thyronome",
+            "manufacturer_name": "Abbott",
+            "expiry_date": "2031-07-07 18:33:37.004356",
+            "dose_in_mg": 500,
+            "medicine_cost_price": 5.10,
+            "medicine_selling_price": 10,
+            "quantity_in_stock": 100,
+            "quantity_sold_since_last_mr_visit": 10,
+            "medicine_description": "Medicine for patients suffering from Thyroid",
+            "transactions": [
+                {
+                    "transaction_type": "sell",
+                    "customer_name": "Soham Dixit",
+                    "customer_contact_number": 9783445512,
+                    "quantity": 2,
+                    "transaction_date_time": "2021-07-07 18:41:30.304933"
+                },
+                {
+                    "transaction_type": "sell",
+                    "customer_name": "Ayush Banerjee",
+                    "customer_contact_number": 8889792124,
+                    "quantity": 3,
+                    "transaction_date_time": "2021-07-07 18:42:38.883533"
+                },
+                {
+                    "transaction_type": "sell",
+                    "customer_name": "Rizwan Khan",
+                    "customer_contact_number": 9382224351,
+                    "quantity": 5,
+                    "transaction_date_time": "2021-07-07 18:44:16.461802"
+                }
+            ]
+        }
+    ]
+}
