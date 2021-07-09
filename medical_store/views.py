@@ -48,6 +48,11 @@ def signup(request):
     )
     shopkeeper.save()
     # SEND EMAIL TO USER EMAIL_ID
+    return Response({
+        'message':'Success'
+    },200)
+
+
 
 
 @api_view(["GET"])
@@ -86,7 +91,7 @@ def login(request):
         if decoded_password != password:
             return Response({"message": "Invalid Password,Shopkeeper Not Found"}, 404)
         encoded_jwt = jwt.encode(
-            {"shopkeeper_id": profile.shopkeeper_id}, ENCRIPTION_KEY, algorithm="HS256"
+            {"shopkeeper_id": str(profile.shopkeeper_id)}, ENCRIPTION_KEY, algorithm="HS256"
         )
         return Response({"Authorization": "Bearer " + encoded_jwt}, 200)
     except Shopkeeper.DoesNotExist:
