@@ -10,7 +10,7 @@ import uuid
 import cryptocode
 import jwt
 
-ENCRIPTION_KEY = os.environ.get("SECRET_KEY")
+ENCRIPTION_KEY = os.environ.get("ENCRIPTION_KEY")
 
 
 @api_view(["POST"])
