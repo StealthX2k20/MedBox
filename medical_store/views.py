@@ -84,7 +84,6 @@ def signup(request):
 
 @api_view(["GET"])
 def verify(request, shopkeeper_id, token):
-    print(shopkeeper_id)
     try:
         profile = Shopkeeper.objects.get(
             {
@@ -106,6 +105,12 @@ def verify(request, shopkeeper_id, token):
         profile.verification_token_expiry_time = None
         profile.verification_token = None
         profile.save()
+
+        subject = 'Medbox | You account has been verified'
+        message = f'Thank You for signing up at Medbox.!! Your account has been verfied. You can now login and enjoy our services.'
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [profile.email, ]
+        send_mail( subject, message, email_from, recipient_list )
 
     except Shopkeeper.DoesNotExist:
         return Response({"message": "Invalid User Id"}, 400)
