@@ -1,3 +1,4 @@
+from bson.objectid import ObjectId
 from medical_store.models.medical_stores import Shopkeeper
 from django.shortcuts import (
     render,
@@ -11,6 +12,7 @@ import cryptocode
 import jwt
 
 ENCRIPTION_KEY = os.environ.get("ENCRIPTION_KEY")
+
 
 @api_view(["POST"])
 def signup(request):
@@ -27,6 +29,15 @@ def signup(request):
         hours=1
     )
     verification_token = uuid.uuid4()
+
+    profile = Shopkeeper.objects.get(
+        {
+            "email": email,
+        }
+    )
+    if profile:
+        return Response({"message": "Email ID Already Exists"}, 400)
+
     if password != confirmPassword:
         return Response(
             data={"message": "Password and Confirm Password Does Not match"}, status=401
@@ -48,32 +59,38 @@ def signup(request):
     )
     shopkeeper.save()
     # SEND EMAIL TO USER EMAIL_ID
-    return Response({
-        'message':'Success'
-    },200)
-
-
+    return Response({"message": "Success"}, 200)
 
 
 @api_view(["GET"])
 def verify(request, shopkeeper_id, token):
-
+    print(shopkeeper_id)
     try:
         profile = Shopkeeper.objects.get(
             {
-                "$and": {
-                    "shopkeeper_id": shopkeeper_id,
-                    "token": token,
-                    "verification_token_expiry_time": {"$gt": datetime.datetime.now()},
-                }
+                "_id": ObjectId(shopkeeper_id),
             }
         )
+        if profile.verification_token != token:
+            return Response(data={"message": "Invalid Verification Token"}, status=400)
+
+        if profile.verification_token_expiry_time < datetime.datetime.now():
+            return Response(
+                data={
+                    "message": "Verfication Code Expired",
+                },
+                status=400,
+            )
+
         profile.is_verfied = True
         profile.verification_token_expiry_time = None
         profile.verification_token = None
         profile.save()
+
     except Shopkeeper.DoesNotExist:
-        return Response({"message": "Time Invalid"}, 403)
+        return Response({"message": "Invalid User Id"}, 400)
+
+    return Response({"message": "Email Verfied"}, 200)
 
 
 @api_view(["POST"])
@@ -91,8 +108,13 @@ def login(request):
         if decoded_password != password:
             return Response({"message": "Invalid Password,Shopkeeper Not Found"}, 404)
         encoded_jwt = jwt.encode(
-            {"shopkeeper_id": str(profile.shopkeeper_id)}, ENCRIPTION_KEY, algorithm="HS256"
+            {"shopkeeper_id": str(profile.shopkeeper_id)},
+            ENCRIPTION_KEY,
+            algorithm="HS256",
         )
-        return Response({"Authorization": "Bearer " + encoded_jwt}, 200)
+        return Response(
+            {"Authorization": "Bearer " + encoded_jwt, "message": "Login Sucessfull"},
+            200,
+        )
     except Shopkeeper.DoesNotExist:
         return Response({"message": "Invalid Credentials,Shopkeeper Not Found"}, 404)

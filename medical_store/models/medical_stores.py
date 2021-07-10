@@ -177,15 +177,19 @@ class Shopkeeper(MongoModel):
         verbose_name="is_verfied", mongo_name="is_verified", default=False
     )
     verification_token = fields.CharField(
-        verbose_name="verification_token", mongo_name="verification_token", default=None
+        verbose_name="verification_token",
+        mongo_name="verification_token",
+        default=None,
+        blank=True,
     )
     verification_token_expiry_time = fields.DateTimeField(
         verbose_name="verification_token_expiry_time",
         mongo_name="verification_token_expiry_time",
         default=datetime.datetime.now(),
+        blank=True,
     )
-    company_tie_ups = fields.EmbeddedDocumentListField(Company)
-    medicines = fields.EmbeddedDocumentListField(Medicine)
+    company_tie_ups = fields.EmbeddedDocumentListField(Company, blank=True)
+    medicines = fields.EmbeddedDocumentListField(Medicine, blank=True)
 
     objects = Manager()
 

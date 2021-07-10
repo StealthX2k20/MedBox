@@ -20,13 +20,13 @@ from django.urls import (
     path,
 )
 from medical_store import views
+
 urlpatterns = [
     path(
         "admin/",
         admin.site.urls,
     ),
-    path(
-        "signup/",
-        views.signup
-    )
+    path("signup/", views.signup),
+    path("login/", views.login),
+    path("<str:shopkeeper_id>/verify/<str:token>", views.verify),
 ]
