@@ -94,8 +94,11 @@ DATABASE_SETTINGS = {
     }
 }
 
+# connect(
+#     f'mongodb+srv://{DATABASE_SETTINGS["mongodb"].get("USER")}:{DATABASE_SETTINGS["mongodb"].get("PASS")}@{DATABASE_SETTINGS["mongodb"].get("CLUSTER_NAME")}.qdbg2.mongodb.net/{DATABASE_SETTINGS["mongodb"].get("DB_NAME")}?retryWrites=true&w=majority'
+# )
 connect(
-    f'mongodb+srv://{DATABASE_SETTINGS["mongodb"].get("USER")}:{DATABASE_SETTINGS["mongodb"].get("PASS")}@{DATABASE_SETTINGS["mongodb"].get("CLUSTER_NAME")}.qdbg2.mongodb.net/{DATABASE_SETTINGS["mongodb"].get("DB_NAME")}?retryWrites=true&w=majority'
+    "mongodb+srv://phoenix_124:2JBlfpWLZKgZz9CJ@shop.kxdzn.mongodb.net/medbox?retryWrites=true&w=majority"
 )
 
 # Password validation
@@ -127,3 +130,13 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# EMAIL SENDING
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get("SMTP_HOST")
+EMAIL_HOST_PASSWORD = os.environ.get("SMTP_HOST_PASSWORD")
