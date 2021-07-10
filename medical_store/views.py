@@ -3,6 +3,13 @@ from medical_store.models.medical_stores import Shopkeeper
 from django.shortcuts import (
     render,
 )
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+import os
+import cryptocode
+import datetime
+import uuid
+import jwt
 
 ENCRIPTION_KEY = os.environ.get("ENCRIPTION_KEY")
 
@@ -23,36 +30,38 @@ def signup(request):
     )
     verification_token = uuid.uuid4()
 
-    profile = Shopkeeper.objects.get(
-        {
-            "email": email,
-        }
-    )
-    if profile:
+    try:
+        Shopkeeper.objects.get(
+            {
+                "email": email,
+            }
+        )
         return Response({"message": "Email ID Already Exists"}, 400)
 
-    if password != confirmPassword:
-        return Response(
-            data={"message": "Password and Confirm Password Does Not match"}, status=401
+    except Shopkeeper.DoesNotExist:
+        if password != confirmPassword:
+            return Response(
+                data={"message": "Password and Confirm Password Does Not match"},
+                status=401,
+            )
+
+        encoded_password = cryptocode.encrypt(password, ENCRIPTION_KEY)
+
+        shopkeeper = Shopkeeper(
+            shopkeeper_name=shopkeeper_name,
+            email=email,
+            password=encoded_password,
+            shopkeeper_contact_number=shopkeeper_contact_number,
+            shop_address=shop_address,
+            is_verfied=is_verfied,
+            verification_token=verification_token,
+            verification_token_expiry_time=verification_token_expiry_time,
+            company_tie_ups=company_tie_ups,
+            medicines=medicines,
         )
-
-    encoded_password = cryptocode.encrypt(password, ENCRIPTION_KEY)
-
-    shopkeeper = Shopkeeper(
-        shopkeeper_name=shopkeeper_name,
-        email=email,
-        password=encoded_password,
-        shopkeeper_contact_number=shopkeeper_contact_number,
-        shop_address=shop_address,
-        is_verfied=is_verfied,
-        verification_token=verification_token,
-        verification_token_expiry_time=verification_token_expiry_time,
-        company_tie_ups=company_tie_ups,
-        medicines=medicines,
-    )
-    shopkeeper.save()
-    # SEND EMAIL TO USER EMAIL_ID
-    return Response({"message": "Success"}, 200)
+        shopkeeper.save()
+        # SEND EMAIL TO USER EMAIL_ID
+        return Response({"message": "Success"}, 200)
 
 
 @api_view(["GET"])
@@ -111,4 +120,3 @@ def login(request):
         )
     except Shopkeeper.DoesNotExist:
         return Response({"message": "Invalid Credentials,Shopkeeper Not Found"}, 404)
-
