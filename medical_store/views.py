@@ -3,6 +3,8 @@ from medical_store.models.medical_stores import Shopkeeper
 from django.shortcuts import (
     render,
 )
+from django.conf import settings
+from django.core.mail import send_mail
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import os
@@ -12,6 +14,8 @@ import uuid
 import jwt
 
 ENCRIPTION_KEY = os.environ.get("ENCRIPTION_KEY")
+HOST_NAME = os.environ.get("HOST_NAME")
+PORT = os.environ.get("PORT")
 
 
 @api_view(["POST"])
@@ -60,8 +64,22 @@ def signup(request):
             medicines=medicines,
         )
         shopkeeper.save()
+        # Verfication Link
+        link = (
+            f"http://{HOST_NAME}:{PORT}/"
+            + str(shopkeeper.shopkeeper_id)
+            + "/verify/"
+            + shopkeeper.verification_token
+        )
         # SEND EMAIL TO USER EMAIL_ID
-        return Response({"message": "Success"}, 200)
+        subject = "Welcome to MedBox"
+        message = f"Welcome to Medbox. Please Verifiy your account by clicking on the link below \n {link} "
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [
+            shopkeeper.email,
+        ]
+        send_mail(subject, message, email_from, recipient_list)
+        return Response({"message": "Success, Verfication Mail Has been Sent"}, 200)
 
 
 @api_view(["GET"])
