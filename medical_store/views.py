@@ -3,13 +3,6 @@ from medical_store.models.medical_stores import Shopkeeper
 from django.shortcuts import (
     render,
 )
-import os
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-import datetime
-import uuid
-import cryptocode
-import jwt
 
 ENCRIPTION_KEY = os.environ.get("ENCRIPTION_KEY")
 
@@ -118,3 +111,4 @@ def login(request):
         )
     except Shopkeeper.DoesNotExist:
         return Response({"message": "Invalid Credentials,Shopkeeper Not Found"}, 404)
+
