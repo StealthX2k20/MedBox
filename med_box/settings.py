@@ -94,12 +94,10 @@ DATABASE_SETTINGS = {
     }
 }
 
-# connect(
-#     f'mongodb+srv://{DATABASE_SETTINGS["mongodb"].get("USER")}:{DATABASE_SETTINGS["mongodb"].get("PASS")}@{DATABASE_SETTINGS["mongodb"].get("CLUSTER_NAME")}.qdbg2.mongodb.net/{DATABASE_SETTINGS["mongodb"].get("DB_NAME")}?retryWrites=true&w=majority'
-# )
 connect(
-    "mongodb+srv://phoenix_124:2JBlfpWLZKgZz9CJ@shop.kxdzn.mongodb.net/medbox?retryWrites=true&w=majority"
+    f'mongodb+srv://{DATABASE_SETTINGS["mongodb"].get("USER")}:{DATABASE_SETTINGS["mongodb"].get("PASS")}@{DATABASE_SETTINGS["mongodb"].get("CLUSTER_NAME")}.qdbg2.mongodb.net/{DATABASE_SETTINGS["mongodb"].get("DB_NAME")}?retryWrites=true&w=majority'
 )
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
